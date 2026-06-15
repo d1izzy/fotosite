@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import Aurora from './components/Aurora'
 import BlurText from './components/BlurText'
@@ -134,13 +135,16 @@ function Header() {
   }, [menuOpen])
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled || menuOpen
-          ? 'bg-black/90 backdrop-blur-xl py-3'
-          : 'bg-transparent py-6'
-      }`}
-    >
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          menuOpen ? 'max-md:pointer-events-none max-md:opacity-0' : ''
+        } ${
+          scrolled
+            ? 'bg-black/90 backdrop-blur-xl py-3'
+            : 'bg-transparent py-6'
+        }`}
+      >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6">
         <a
           href="#"
@@ -195,55 +199,63 @@ function Header() {
           />
         </button>
       </div>
+      </header>
 
-      {menuOpen && (
-        <div className="fixed inset-0 z-[60] flex flex-col bg-[#0a0a0a] md:hidden">
-          <div className="flex items-center justify-between px-6 py-6">
-            <a
-              href="#"
-              className="font-[family-name:var(--font-display)] text-xl tracking-[0.2em] text-white uppercase"
-              onClick={() => setMenuOpen(false)}
-            >
-              В ФОКУСЕ
-            </a>
-            <button
-              type="button"
-              className="flex flex-col gap-1.5"
-              onClick={() => setMenuOpen(false)}
-              aria-label="Закрыть меню"
-            >
-              <span className="block h-0.5 w-6 translate-y-2 rotate-45 bg-white" />
-              <span className="block h-0.5 w-6 -translate-y-2 -rotate-45 bg-white" />
-            </button>
-          </div>
+      {menuOpen &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-[100] flex flex-col bg-[#0a0a0a] md:hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Навигация"
+          >
+            <div className="flex items-center justify-between px-6 pb-4 pt-[max(1.5rem,env(safe-area-inset-top))]">
+              <a
+                href="#"
+                className="font-[family-name:var(--font-display)] text-xl tracking-[0.2em] text-white uppercase"
+                onClick={() => setMenuOpen(false)}
+              >
+                В ФОКУСЕ
+              </a>
+              <button
+                type="button"
+                className="flex flex-col gap-1.5 p-2"
+                onClick={() => setMenuOpen(false)}
+                aria-label="Закрыть меню"
+              >
+                <span className="block h-0.5 w-6 translate-y-2 rotate-45 bg-white" />
+                <span className="block h-0.5 w-6 -translate-y-2 -rotate-45 bg-white" />
+              </button>
+            </div>
 
-          <nav className="flex flex-1 flex-col px-6 pt-4">
-            {NAV_LINKS.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '')
-              return (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className={`border-b border-white/5 py-4 text-lg transition-colors ${
-                    isActive ? 'text-[#d4af37]' : 'text-white/90'
-                  }`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
-              )
-            })}
-            <a
-              href="#contact"
-              className="mt-8 block rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 px-5 py-3.5 text-center text-[#d4af37]"
-              onClick={() => setMenuOpen(false)}
-            >
-              Как нас найти
-            </a>
-          </nav>
-        </div>
-      )}
-    </header>
+            <nav className="flex flex-1 flex-col px-6 pt-2">
+              {NAV_LINKS.map((link) => {
+                const isActive = activeSection === link.href.replace('#', '')
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className={`border-b border-white/5 py-4 text-lg transition-colors ${
+                      isActive ? 'text-[#d4af37]' : 'text-white/90'
+                    }`}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                )
+              })}
+              <a
+                href="#contact"
+                className="mt-8 block rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 px-5 py-3.5 text-center text-[#d4af37]"
+                onClick={() => setMenuOpen(false)}
+              >
+                Как нас найти
+              </a>
+            </nav>
+          </div>,
+          document.body,
+        )}
+    </>
   )
 }
 
