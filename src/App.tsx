@@ -7,6 +7,7 @@ import FadeContent from './components/FadeContent'
 import SpotlightCard from './components/SpotlightCard'
 import TiltedCard from './components/TiltedCard'
 import MadeByClickBuild from './components/MadeByClickBuild'
+import { assetPath } from './lib/assetPath'
 
 const NAV_LINKS = [
   { href: '#advantages', label: 'Преимущества' },
@@ -46,32 +47,32 @@ const PRODUCTS = [
   {
     title: 'Печать фото',
     category: '10×15, 15×20, А4',
-    image: '/products/01-print.png',
+    image: assetPath('/products/01-print.png'),
   },
   {
     title: 'Фотомагниты',
     category: 'Винил и акрил',
-    image: '/products/02-magnets.png',
+    image: assetPath('/products/02-magnets.png'),
   },
   {
     title: 'Фоторамки',
     category: 'Готовое оформление',
-    image: '/products/03-frames.png',
+    image: assetPath('/products/03-frames.png'),
   },
   {
     title: 'Семейные фото',
     category: 'Дети и родители',
-    image: '/products/04-family.png',
+    image: assetPath('/products/04-family.png'),
   },
   {
     title: 'Парные портреты',
     category: 'Для двоих',
-    image: '/products/05-couple.png',
+    image: assetPath('/products/05-couple.png'),
   },
   {
     title: 'Кружки и стикеры',
     category: 'С вашим фото',
-    image: '/products/06-stickers.png',
+    image: assetPath('/products/06-stickers.png'),
   },
 ]
 
@@ -339,7 +340,7 @@ function About() {
           <FadeContent blur duration={1200}>
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white">
               <img
-                src="/about.png"
+                src={assetPath('/about.png')}
                 alt="Фотоцентр «В ФОКУСЕ» в ТРЦ «Фокус», Челябинск"
                 className="h-full w-full object-contain"
               />

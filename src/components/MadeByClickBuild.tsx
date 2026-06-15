@@ -1,3 +1,5 @@
+import { assetPath } from '../lib/assetPath'
+
 export default function MadeByClickBuild() {
   return (
     <div className="border-t border-white/5 bg-black py-3 text-center">
@@ -10,7 +12,7 @@ export default function MadeByClickBuild() {
         <span>Сделано на</span>
         <span className="inline-flex h-[18px] w-[18px] shrink-0 overflow-hidden rounded-[3px]">
           <img
-            src="/clickbuild-logo.png"
+            src={assetPath('/clickbuild-logo.png')}
             alt=""
             width={18}
             height={36}
