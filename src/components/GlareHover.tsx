@@ -55,7 +55,7 @@ const GlareHover: React.FC<GlareHoverProps> = ({
 
     el.style.transition = 'none';
     el.style.backgroundPosition = '-100% -100%, 0 0';
-    el.style.transition = `${transitionDuration}ms ease`;
+    el.style.transition = `${transitionDuration}ms ease-in-out`;
     el.style.backgroundPosition = '100% 100%, 0 0';
   };
 
@@ -67,7 +67,7 @@ const GlareHover: React.FC<GlareHoverProps> = ({
       el.style.transition = 'none';
       el.style.backgroundPosition = '-100% -100%, 0 0';
     } else {
-      el.style.transition = `${transitionDuration}ms ease`;
+      el.style.transition = `${transitionDuration}ms ease-in-out`;
       el.style.backgroundPosition = '-100% -100%, 0 0';
     }
   };

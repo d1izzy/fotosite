@@ -4,9 +4,13 @@ import Aurora from './components/Aurora'
 import BlurText from './components/BlurText'
 import SplitText from './components/SplitText'
 import FadeContent from './components/FadeContent'
+import AnimatedContent from './components/AnimatedContent'
+import ScrollProgress from './components/ScrollProgress'
 import SpotlightCard from './components/SpotlightCard'
 import TiltedCard from './components/TiltedCard'
+import GlareHover from './components/GlareHover'
 import MadeByClickBuild from './components/MadeByClickBuild'
+import SectionDivider, { GoldenLine } from './components/SectionDivider'
 import { assetPath } from './lib/assetPath'
 
 const NAV_LINKS = [
@@ -88,9 +92,12 @@ const STATS = [
   { value: '10+', label: 'видов сувениров' },
 ]
 
+const SECTION_IDS = NAV_LINKS.map((link) => link.href.replace('#', ''))
+
 function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -98,11 +105,32 @@ function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    const sections = SECTION_IDS.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[]
+    if (!sections.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+
+        if (visible[0]?.target.id) {
+          setActiveSection(visible[0].target.id)
+        }
+      },
+      { rootMargin: '-35% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] },
+    )
+
+    sections.forEach((section) => observer.observe(section))
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-black/70 backdrop-blur-xl border-b border-white/5 py-3'
+          ? 'bg-black/70 backdrop-blur-xl py-3'
           : 'bg-transparent py-6'
       }`}
     >
@@ -115,15 +143,25 @@ function Header() {
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm tracking-wide text-white/70 transition-colors hover:text-[#d4af37]"
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isActive = activeSection === link.href.replace('#', '')
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`relative text-sm tracking-wide transition-colors ${
+                  isActive ? 'text-[#d4af37]' : 'text-white/70 hover:text-[#d4af37]'
+                }`}
+              >
+                {link.label}
+                <span
+                  className={`absolute -bottom-1.5 left-1/2 h-px -translate-x-1/2 bg-[#d4af37] transition-all duration-500 ${
+                    isActive ? 'w-full opacity-100' : 'w-0 opacity-0'
+                  }`}
+                />
+              </a>
+            )
+          })}
         </nav>
 
         <a
@@ -153,16 +191,21 @@ function Header() {
 
       {menuOpen && (
         <nav className="border-t border-white/5 bg-black/90 px-6 py-4 md:hidden">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="block py-3 text-white/80"
-              onClick={() => setMenuOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isActive = activeSection === link.href.replace('#', '')
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`block py-3 transition-colors ${
+                  isActive ? 'text-[#d4af37]' : 'text-white/80'
+                }`}
+                onClick={() => setMenuOpen(false)}
+              >
+                {link.label}
+              </a>
+            )
+          })}
           <a
             href="#contact"
             className="mt-2 block rounded-full border border-[#d4af37]/40 px-5 py-2 text-center text-[#d4af37]"
@@ -242,10 +285,9 @@ function Hero() {
 
 function Advantages() {
   return (
-    <section id="advantages" className="bg-[#0a0a0a] px-6 py-24">
+    <section id="advantages" className="relative px-6 py-20 md:py-24">
       <div className="mx-auto max-w-6xl">
-        <FadeContent blur duration={1200}>
-          <div className="mb-16 text-center">
+        <AnimatedContent distance={60} duration={1.1} scale={0.96} className="mb-16 text-center">
             <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
               Преимущества
             </p>
@@ -255,8 +297,7 @@ function Advantages() {
             <p className="mx-auto mt-4 max-w-xl text-white/50">
               Фотоцентр «В ФОКУСЕ» на 3 этаже ТРЦ «Фокус» — сувениры с вашим фото за считанные минуты
             </p>
-          </div>
-        </FadeContent>
+          </AnimatedContent>
 
         <div className="grid gap-6 sm:grid-cols-2">
           {ADVANTAGES.map((item, i) => (
@@ -281,10 +322,10 @@ function Advantages() {
 
 function Products() {
   return (
-    <section id="products" className="bg-[#0f0f0f] px-6 py-24">
-      <div className="mx-auto max-w-6xl">
-        <FadeContent blur duration={1200}>
-          <div className="mb-16 text-center">
+    <section id="products" className="relative px-6 py-20 md:py-24">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05)_0%,transparent_65%)]" />
+      <div className="relative z-10 mx-auto max-w-6xl">
+        <AnimatedContent distance={60} duration={1.1} scale={0.96} className="mb-16 text-center">
             <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
               Продукция
             </p>
@@ -294,8 +335,7 @@ function Products() {
             <p className="mx-auto mt-4 max-w-xl text-white/50">
               Печать фотографий, магниты, рамки и сувенирная продукция с вашим изображением
             </p>
-          </div>
-        </FadeContent>
+          </AnimatedContent>
 
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {PRODUCTS.map((item, i) => (
@@ -314,6 +354,7 @@ function Products() {
                   rotateAmplitude={12}
                   showMobileWarning={false}
                   showTooltip={false}
+                  glowBorderOnHover
                 />
                 <div className="mt-5 text-center">
                   <p className="text-xs tracking-widest text-[#d4af37] uppercase">
@@ -334,10 +375,10 @@ function Products() {
 
 function About() {
   return (
-    <section id="about" className="bg-[#0a0a0a] px-6 py-24">
+    <section id="about" className="relative px-6 pt-20 pb-10 md:pt-24 md:pb-12">
       <div className="mx-auto max-w-6xl">
         <div className="grid items-center gap-16 lg:grid-cols-2">
-          <FadeContent blur duration={1200}>
+          <AnimatedContent distance={70} direction="horizontal" reverse duration={1.1}>
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white">
               <img
                 src={assetPath('/about.png')}
@@ -346,9 +387,9 @@ function About() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
             </div>
-          </FadeContent>
+          </AnimatedContent>
 
-          <FadeContent blur duration={1200} delay={200}>
+          <AnimatedContent distance={70} direction="horizontal" duration={1.1} delay={0.12}>
             <div>
               <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
                 О нас
@@ -386,27 +427,37 @@ function About() {
                 ))}
               </div>
             </div>
-          </FadeContent>
+          </AnimatedContent>
         </div>
 
-        <FadeContent blur duration={1200} delay={300}>
-          <div className="mt-20 grid gap-8 md:grid-cols-3">
-            {STEPS.map((item) => (
-              <div
-                key={item.step}
-                className="rounded-2xl border border-white/10 bg-white/[0.03] p-8"
+        <div className="mt-16 grid gap-8 md:grid-cols-3">
+            {STEPS.map((item, i) => (
+              <AnimatedContent key={item.step} distance={50} duration={0.9} delay={i * 0.1}>
+              <GlareHover
+                width="100%"
+                height="100%"
+                className="block h-full w-full cursor-default border-white/10"
+                background="rgba(255,255,255,0.03)"
+                borderColor="rgba(255,255,255,0.1)"
+                borderRadius="1rem"
+                glareColor="#d4af37"
+                glareOpacity={0.4}
+                glareSize={280}
+                transitionDuration={1000}
               >
-                <p className="font-[family-name:var(--font-display)] text-4xl text-[#d4af37]/40">
-                  {item.step}
-                </p>
-                <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl text-white">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-white/50">{item.text}</p>
-              </div>
+                <div className="w-full p-8 text-left">
+                  <p className="font-[family-name:var(--font-display)] text-4xl text-[#d4af37]/40">
+                    {item.step}
+                  </p>
+                  <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl text-white">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-white/50">{item.text}</p>
+                </div>
+              </GlareHover>
+              </AnimatedContent>
             ))}
           </div>
-        </FadeContent>
       </div>
     </section>
   )
@@ -414,18 +465,10 @@ function About() {
 
 function Contact() {
   return (
-    <section id="contact" className="relative overflow-hidden bg-[#0f0f0f] px-6 py-24">
-      <div className="absolute inset-0 opacity-30">
-        <Aurora
-          colorStops={['#0a0a0a', '#3d2e0a', '#0a0a0a']}
-          amplitude={0.5}
-          blend={0.8}
-          speed={0.2}
-        />
-      </div>
-
+    <section id="contact" className="relative px-6 pb-20 pt-10 md:pb-24 md:pt-12">
       <div className="relative z-10 mx-auto max-w-3xl text-center">
-        <FadeContent blur duration={1200}>
+        <AnimatedContent distance={50} duration={1} className="text-center">
+          <GoldenLine className="mx-auto mb-10 md:mb-12" />
           <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
             Контакты
           </p>
@@ -436,9 +479,22 @@ function Contact() {
             «В ФОКУСЕ» — на 3 этаже ТРЦ «Фокус» в северо-западной части Челябинска.
             Приходите без записи — фотографируйтесь и забирайте сувениры сразу.
           </p>
+        </AnimatedContent>
 
-          <div className="mx-auto mt-10 max-w-md rounded-2xl border border-white/10 bg-white/[0.03] p-8 text-left">
-            <div className="space-y-5">
+        <AnimatedContent distance={40} duration={0.9} delay={0.15} className="text-center">
+          <GlareHover
+            width="100%"
+            height="auto"
+            className="mx-auto mt-10 block w-full max-w-md cursor-default border-white/10"
+            background="rgba(255,255,255,0.03)"
+            borderColor="rgba(255,255,255,0.1)"
+            borderRadius="1rem"
+            glareColor="#d4af37"
+            glareOpacity={0.4}
+            glareSize={300}
+            transitionDuration={1000}
+          >
+            <div className="w-full space-y-5 p-8 text-left">
               <div>
                 <p className="text-xs tracking-widest text-[#d4af37] uppercase">Адрес</p>
                 <p className="mt-1 text-white/80">
@@ -475,7 +531,7 @@ function Contact() {
                 </a>
               </div>
             </div>
-          </div>
+          </GlareHover>
 
           <div className="mt-8 flex justify-center gap-4">
             <a
@@ -495,7 +551,7 @@ function Contact() {
               ВКонтакте
             </a>
           </div>
-        </FadeContent>
+        </AnimatedContent>
       </div>
     </section>
   )
@@ -503,7 +559,7 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="bg-[#0a0a0a]">
+    <footer className="relative">
       <div className="border-t border-white/5 px-6 py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 text-sm text-white/40 md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3">
@@ -531,11 +587,15 @@ function Footer() {
 export default function App() {
   return (
     <>
+      <ScrollProgress />
       <Header />
-      <main>
+      <main className="bg-[#0a0a0a]">
         <Hero />
+        <SectionDivider />
         <Advantages />
+        <SectionDivider />
         <Products />
+        <SectionDivider />
         <About />
         <Contact />
       </main>

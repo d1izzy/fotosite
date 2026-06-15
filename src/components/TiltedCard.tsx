@@ -18,6 +18,8 @@ interface TiltedCardProps {
   displayOverlayContent?: boolean;
   imageFit?: 'cover' | 'contain';
   imageBackground?: string;
+  glowBorderOnHover?: boolean;
+  glowBorderColor?: string;
 }
 
 const springValues: SpringOptions = {
@@ -41,7 +43,9 @@ export default function TiltedCard({
   overlayContent = null,
   displayOverlayContent = false,
   imageFit = 'cover',
-  imageBackground = 'transparent'
+  imageBackground = 'transparent',
+  glowBorderOnHover = false,
+  glowBorderColor = '#d4af37'
 }: TiltedCardProps) {
   const ref = useRef<HTMLElement>(null);
   const x = useMotionValue(0);
@@ -50,6 +54,7 @@ export default function TiltedCard({
   const rotateY = useSpring(useMotionValue(0), springValues);
   const scale = useSpring(1, springValues);
   const opacity = useSpring(0);
+  const borderGlow = useSpring(0, { stiffness: 120, damping: 22, mass: 0.8 });
   const rotateFigcaption = useSpring(0, {
     stiffness: 350,
     damping: 30,
@@ -82,6 +87,7 @@ export default function TiltedCard({
   function handleMouseEnter() {
     scale.set(scaleOnHover);
     opacity.set(1);
+    if (glowBorderOnHover) borderGlow.set(1);
   }
 
   function handleMouseLeave() {
@@ -90,6 +96,7 @@ export default function TiltedCard({
     rotateX.set(0);
     rotateY.set(0);
     rotateFigcaption.set(0);
+    if (glowBorderOnHover) borderGlow.set(0);
   }
 
   return (
@@ -120,18 +127,30 @@ export default function TiltedCard({
           scale
         }}
       >
-        <motion.img
-          src={imageSrc}
-          alt={altText}
-          className={`absolute top-0 left-0 rounded-[15px] will-change-transform [transform:translateZ(0)] shadow-lg ${
-            imageFit === 'contain' ? 'object-contain p-2' : 'object-cover'
-          }`}
-          style={{
-            width: imageWidth,
-            height: imageHeight,
-            backgroundColor: imageBackground
-          }}
-        />
+        <div className="relative" style={{ width: imageWidth, height: imageHeight }}>
+          <motion.img
+            src={imageSrc}
+            alt={altText}
+            className={`absolute top-0 left-0 rounded-[15px] will-change-transform [transform:translateZ(0)] shadow-lg ${
+              imageFit === 'contain' ? 'object-contain p-2' : 'object-cover'
+            }`}
+            style={{
+              width: imageWidth,
+              height: imageHeight,
+              backgroundColor: imageBackground
+            }}
+          />
+
+          {glowBorderOnHover && (
+            <motion.div
+              className="pointer-events-none absolute inset-0 rounded-[15px]"
+              style={{
+                opacity: borderGlow,
+                boxShadow: `inset 0 0 0 2px ${glowBorderColor}, 0 0 28px rgba(212, 175, 55, 0.45)`
+              }}
+            />
+          )}
+        </div>
 
         {displayOverlayContent && overlayContent && (
           <motion.div className="absolute top-0 left-0 z-[2] will-change-transform [transform:translateZ(30px)]">
