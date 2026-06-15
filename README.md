@@ -24,7 +24,7 @@ npm run preview
 
 После публикации сайт будет доступен по адресу:
 
-`https://d1izzy.github.io/fotosite/`
+`https://login.github.io/fotosite/`
 
 ### Первый раз: создать репозиторий и залить код
 
@@ -34,7 +34,7 @@ npm run preview
 
 ```bash
 git branch -M main
-git remote add origin https://github.com/d1izzy/fotosite.git
+git remote add origin https://github.com/login/fotosite.git
 git push -u origin main
 ```
 
