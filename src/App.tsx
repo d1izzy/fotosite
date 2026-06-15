@@ -126,11 +126,18 @@ function Header() {
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-black/70 backdrop-blur-xl py-3'
+        scrolled || menuOpen
+          ? 'bg-black/90 backdrop-blur-xl py-3'
           : 'bg-transparent py-6'
       }`}
     >
@@ -190,30 +197,51 @@ function Header() {
       </div>
 
       {menuOpen && (
-        <nav className="border-t border-white/5 bg-black/90 px-6 py-4 md:hidden">
-          {NAV_LINKS.map((link) => {
-            const isActive = activeSection === link.href.replace('#', '')
-            return (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`block py-3 transition-colors ${
-                  isActive ? 'text-[#d4af37]' : 'text-white/80'
-                }`}
-                onClick={() => setMenuOpen(false)}
-              >
-                {link.label}
-              </a>
-            )
-          })}
-          <a
-            href="#contact"
-            className="mt-2 block rounded-full border border-[#d4af37]/40 px-5 py-2 text-center text-[#d4af37]"
-            onClick={() => setMenuOpen(false)}
-          >
-            Как нас найти
-          </a>
-        </nav>
+        <div className="fixed inset-0 z-[60] flex flex-col bg-[#0a0a0a] md:hidden">
+          <div className="flex items-center justify-between px-6 py-6">
+            <a
+              href="#"
+              className="font-[family-name:var(--font-display)] text-xl tracking-[0.2em] text-white uppercase"
+              onClick={() => setMenuOpen(false)}
+            >
+              В ФОКУСЕ
+            </a>
+            <button
+              type="button"
+              className="flex flex-col gap-1.5"
+              onClick={() => setMenuOpen(false)}
+              aria-label="Закрыть меню"
+            >
+              <span className="block h-0.5 w-6 translate-y-2 rotate-45 bg-white" />
+              <span className="block h-0.5 w-6 -translate-y-2 -rotate-45 bg-white" />
+            </button>
+          </div>
+
+          <nav className="flex flex-1 flex-col px-6 pt-4">
+            {NAV_LINKS.map((link) => {
+              const isActive = activeSection === link.href.replace('#', '')
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`border-b border-white/5 py-4 text-lg transition-colors ${
+                    isActive ? 'text-[#d4af37]' : 'text-white/90'
+                  }`}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  {link.label}
+                </a>
+              )
+            })}
+            <a
+              href="#contact"
+              className="mt-8 block rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 px-5 py-3.5 text-center text-[#d4af37]"
+              onClick={() => setMenuOpen(false)}
+            >
+              Как нас найти
+            </a>
+          </nav>
+        </div>
       )}
     </header>
   )
