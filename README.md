@@ -1,73 +1,50 @@
-# React + TypeScript + Vite
+# В ФОКУСЕ — лендинг фотоцентра
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Одностраничный сайт для ИП фотоуслуг в ТРЦ «Фокус», Челябинск.
 
-Currently, two official plugins are available:
+## Локальный запуск
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Сайт откроется на http://localhost:5173
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Сборка
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run preview
+```
+
+## GitHub Pages
+
+Проект настроен на автоматический деплой через GitHub Actions при push в ветку `main` или `master`.
+
+После публикации сайт будет доступен по адресу:
+
+`https://ВАШ_ЛОГИН.github.io/ИМЯ_РЕПОЗИТОРИЯ/`
+
+### Первый раз: создать репозиторий и залить код
+
+1. На [github.com](https://github.com) нажмите **New repository**
+2. Имя репозитория, например: `fotosite` (без README и .gitignore — они уже в проекте)
+3. В папке проекта выполните (подставьте свой логин):
+
+```bash
+git branch -M main
+git remote add origin https://github.com/ВАШ_ЛОГИН/fotosite.git
+git push -u origin main
+```
+
+4. В репозитории на GitHub: **Settings → Pages → Build and deployment → Source** → выберите **GitHub Actions**
+5. После успешного workflow (вкладка **Actions**) сайт появится по ссылке выше
+
+### Вернуться к сохранённой версии (Git)
+
+```bash
+git log --oneline          # список версий
+git checkout 0ad97c8       # вернуться к коммиту
+git checkout main          # вернуться к последней версии
 ```
