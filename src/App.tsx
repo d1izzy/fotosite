@@ -10,6 +10,7 @@ import ScrollProgress from './components/ScrollProgress'
 import SpotlightCard from './components/SpotlightCard'
 import TiltedCard from './components/TiltedCard'
 import GlareHover from './components/GlareHover'
+import GridMotion from './components/GridMotion'
 import MadeByClickBuild from './components/MadeByClickBuild'
 import SectionDivider, { GoldenLine } from './components/SectionDivider'
 import { assetPath } from './lib/assetPath'
@@ -81,6 +82,10 @@ const PRODUCTS = [
   },
 ]
 
+const PRODUCT_GALLERY = Array.from({ length: 8 }, (_, i) =>
+  assetPath(`/products/gallery/${String(i + 1).padStart(2, '0')}.jpg`),
+)
+
 const STEPS = [
   { step: '01', title: 'Подходите к нам', text: 'Найдите «В ФОКУСЕ» на 3 этаже ТРЦ «Фокус» — запись не нужна' },
   { step: '02', title: 'Фотографируемся', text: 'Профессиональный фотограф сделает снимки за 1–2 минуты' },
@@ -141,7 +146,7 @@ function Header() {
           menuOpen ? 'max-md:pointer-events-none max-md:opacity-0' : ''
         } ${
           scrolled
-            ? 'bg-black/90 backdrop-blur-xl py-3'
+            ? 'bg-canvas/90 backdrop-blur-xl py-3'
             : 'bg-transparent py-6'
         }`}
       >
@@ -161,12 +166,12 @@ function Header() {
                 key={link.href}
                 href={link.href}
                 className={`relative text-sm tracking-wide transition-colors ${
-                  isActive ? 'text-[#d4af37]' : 'text-white/70 hover:text-[#d4af37]'
+                  isActive ? 'text-accent' : 'text-white/70 hover:text-accent'
                 }`}
               >
                 {link.label}
                 <span
-                  className={`absolute -bottom-1.5 left-1/2 h-px -translate-x-1/2 bg-[#d4af37] transition-all duration-500 ${
+                  className={`absolute -bottom-1.5 left-1/2 h-px -translate-x-1/2 bg-accent transition-all duration-500 ${
                     isActive ? 'w-full opacity-100' : 'w-0 opacity-0'
                   }`}
                 />
@@ -177,7 +182,7 @@ function Header() {
 
         <a
           href="#contact"
-          className="hidden rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 px-5 py-2 text-sm text-[#d4af37] transition-all hover:bg-[#d4af37]/20 md:inline-block"
+          className="hidden rounded-full border border-accent/40 bg-accent/10 px-5 py-2 text-sm text-accent transition-all hover:bg-accent/20 md:inline-block"
         >
           Как нас найти
         </a>
@@ -204,7 +209,7 @@ function Header() {
       {menuOpen &&
         createPortal(
           <div
-            className="fixed inset-0 z-[100] flex flex-col bg-[#0a0a0a] md:hidden"
+            className="fixed inset-0 z-[100] flex flex-col bg-canvas md:hidden"
             role="dialog"
             aria-modal="true"
             aria-label="Навигация"
@@ -236,7 +241,7 @@ function Header() {
                     key={link.href}
                     href={link.href}
                     className={`border-b border-white/5 py-4 text-lg transition-colors ${
-                      isActive ? 'text-[#d4af37]' : 'text-white/90'
+                      isActive ? 'text-accent' : 'text-white/90'
                     }`}
                     onClick={() => setMenuOpen(false)}
                   >
@@ -246,7 +251,7 @@ function Header() {
               })}
               <a
                 href="#contact"
-                className="mt-8 block rounded-full border border-[#d4af37]/40 bg-[#d4af37]/10 px-5 py-3.5 text-center text-[#d4af37]"
+                className="mt-8 block rounded-full border border-accent/40 bg-accent/10 px-5 py-3.5 text-center text-accent"
                 onClick={() => setMenuOpen(false)}
               >
                 Как нас найти
@@ -262,18 +267,18 @@ function Header() {
 function Hero() {
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 bg-[#0a0a0a]">
+      <div className="absolute inset-0 bg-canvas">
         <Aurora
-          colorStops={['#1a1208', '#d4af37', '#2a1f0f']}
+          colorStops={['#0a0a0a', '#eef2f7', '#0a0a0a']}
           amplitude={0.8}
           blend={0.6}
           speed={0.4}
         />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-[#0a0a0a]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-canvas" />
 
       <div className="relative z-10 mx-auto max-w-5xl px-6 pt-24 text-center">
-        <p className="mb-4 text-xs tracking-[0.35em] text-[#d4af37] uppercase">
+        <p className="mb-4 text-xs tracking-[0.35em] text-accent uppercase">
           ИП · «В ФОКУСЕ» · ТРЦ «Фокус», 3 этаж
         </p>
 
@@ -301,7 +306,7 @@ function Hero() {
         <div className="mt-12 flex flex-col items-center justify-center gap-4 sm:flex-row">
           <a
             href="#contact"
-            className="rounded-full bg-[#d4af37] px-8 py-3.5 text-sm font-medium tracking-wide text-black transition-transform hover:scale-105"
+            className="call-pulse rounded-full bg-accent px-8 py-3.5 text-sm font-medium tracking-wide text-stone-950 transition-transform hover:scale-105"
           >
             Как нас найти
           </a>
@@ -328,7 +333,7 @@ function Advantages() {
     <section id="advantages" className="relative px-6 py-20 md:py-24">
       <div className="mx-auto max-w-6xl">
         <AnimatedContent distance={60} duration={1.1} scale={0.96} className="mb-16 text-center">
-            <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
+            <p className="mb-3 text-xs tracking-[0.3em] text-accent uppercase">
               Преимущества
             </p>
             <h2 className="font-[family-name:var(--font-display)] text-4xl text-white md:text-5xl">
@@ -344,9 +349,9 @@ function Advantages() {
             <FadeContent key={item.title} blur duration={1000} delay={i * 150}>
               <SpotlightCard
                 className="h-full border-white/10 bg-white/[0.03] p-8"
-                spotlightColor="rgba(212, 175, 55, 0.15)"
+                spotlightColor="rgba(238, 242, 247, 0.2)"
               >
-                <span className="mb-4 block text-2xl text-[#d4af37]">{item.icon}</span>
+                <span className="mb-4 block text-2xl text-accent">{item.icon}</span>
                 <h3 className="font-[family-name:var(--font-display)] text-2xl text-white">
                   {item.title}
                 </h3>
@@ -363,10 +368,10 @@ function Advantages() {
 function Products() {
   return (
     <section id="products" className="relative px-6 py-20 md:py-24">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05)_0%,transparent_65%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgb(var(--color-accent-rgb)/0.06)_0%,transparent_65%)]" />
       <div className="relative z-10 mx-auto max-w-6xl">
         <AnimatedContent distance={60} duration={1.1} scale={0.96} className="mb-16 text-center">
-            <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
+            <p className="mb-3 text-xs tracking-[0.3em] text-accent uppercase">
               Продукция
             </p>
             <h2 className="font-[family-name:var(--font-display)] text-4xl text-white md:text-5xl">
@@ -397,7 +402,7 @@ function Products() {
                   glowBorderOnHover
                 />
                 <div className="mt-5 text-center">
-                  <p className="text-xs tracking-widest text-[#d4af37] uppercase">
+                  <p className="text-xs tracking-widest text-accent uppercase">
                     {item.category}
                   </p>
                   <h3 className="mt-1 font-[family-name:var(--font-display)] text-xl text-white">
@@ -408,6 +413,17 @@ function Products() {
             </FadeContent>
           ))}
         </div>
+
+        <AnimatedContent distance={50} duration={1} delay={0.1} className="mt-16 md:mt-20">
+          <div className="mb-6 text-center">
+            <p className="text-xs tracking-[0.25em] text-white/40 uppercase">
+              Примеры готовой продукции
+            </p>
+          </div>
+          <div className="relative h-[min(70vh,520px)] overflow-hidden rounded-2xl border-2 border-accent shadow-[0_0_32px_rgb(var(--color-accent-rgb)/0.12)]">
+            <GridMotion items={PRODUCT_GALLERY} gradientColor="#0a0a0a" className="h-full" />
+          </div>
+        </AnimatedContent>
       </div>
     </section>
   )
@@ -431,7 +447,7 @@ function About() {
 
           <AnimatedContent distance={70} direction="horizontal" duration={1.1} delay={0.12}>
             <div>
-              <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
+              <p className="mb-3 text-xs tracking-[0.3em] text-accent uppercase">
                 О нас
               </p>
               <h2 className="font-[family-name:var(--font-display)] text-4xl text-white md:text-5xl">
@@ -457,7 +473,7 @@ function About() {
               <div className="mt-10 grid grid-cols-3 gap-6 border-t border-white/10 pt-10">
                 {STATS.map((stat) => (
                   <div key={stat.label}>
-                    <p className="font-[family-name:var(--font-display)] text-3xl text-[#d4af37]">
+                    <p className="font-[family-name:var(--font-display)] text-3xl text-accent">
                       {stat.value}
                     </p>
                     <p className="mt-1 text-xs tracking-wide text-white/40 uppercase">
@@ -480,13 +496,13 @@ function About() {
                 background="rgba(255,255,255,0.03)"
                 borderColor="rgba(255,255,255,0.1)"
                 borderRadius="1rem"
-                glareColor="#d4af37"
+                glareColor="#eef2f7"
                 glareOpacity={0.4}
                 glareSize={280}
                 transitionDuration={1000}
               >
                 <div className="w-full p-8 text-left">
-                  <p className="font-[family-name:var(--font-display)] text-4xl text-[#d4af37]/40">
+                  <p className="font-[family-name:var(--font-display)] text-4xl text-accent/40">
                     {item.step}
                   </p>
                   <h3 className="mt-4 font-[family-name:var(--font-display)] text-xl text-white">
@@ -506,12 +522,18 @@ function About() {
 function Contact() {
   return (
     <section id="contact" className="relative px-6 pb-16 pt-8 md:pb-20 md:pt-10">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.04)_0%,transparent_70%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgb(var(--color-accent-rgb)/0.05)_0%,transparent_70%)]" />
 
       <div className="relative z-10 mx-auto max-w-4xl">
-        <AnimatedContent distance={50} duration={1} className="text-center">
+        <AnimatedContent
+          scrollTrigger="#contact"
+          distance={45}
+          duration={0.9}
+          threshold={0.55}
+          className="text-center"
+        >
           <GoldenLine className="mx-auto mb-8" />
-          <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
+          <p className="mb-3 text-xs tracking-[0.3em] text-accent uppercase">
             Контакты
           </p>
           <h2 className="font-[family-name:var(--font-display)] text-4xl text-white md:text-5xl">
@@ -521,9 +543,7 @@ function Contact() {
             «В ФОКУСЕ» — на 3 этаже ТРЦ «Фокус» в северо-западной части Челябинска.
             Фотографируйтесь и забирайте сувениры сразу — запись не нужна.
           </p>
-        </AnimatedContent>
 
-        <AnimatedContent distance={40} duration={0.9} delay={0.15} className="text-center">
           <GlareHover
             width="100%"
             height="auto"
@@ -531,15 +551,15 @@ function Contact() {
             background="rgba(255,255,255,0.03)"
             borderColor="rgba(255,255,255,0.1)"
             borderRadius="1rem"
-            glareColor="#d4af37"
+            glareColor="#eef2f7"
             glareOpacity={0.4}
             glareSize={300}
             transitionDuration={1000}
           >
             <div className="w-full space-y-5 p-8 text-left">
               <div>
-                <p className="text-xs tracking-widest text-[#d4af37] uppercase">Адрес</p>
-                <p className="mt-1 text-white/80">
+                <p className="contact-field-label text-xs uppercase">Адрес</p>
+                <p className="contact-field-value mt-1.5 text-sm leading-relaxed">
                   Фотоцентр «В ФОКУСЕ», 3 этаж
                   <br />
                   ТРЦ «Фокус», Молдавская ул., 16
@@ -548,37 +568,35 @@ function Contact() {
                 </p>
               </div>
               <div>
-                <p className="text-xs tracking-widest text-[#d4af37] uppercase">Режим работы</p>
-                <p className="mt-1 text-white/80">Пн–Пт: 14:00–22:00</p>
-                <p className="text-white/80">Сб–Вс: 12:00–22:00</p>
+                <p className="contact-field-label text-xs uppercase">Режим работы</p>
+                <p className="contact-field-value mt-1.5 text-sm">Пн–Пт: 14:00–22:00</p>
+                <p className="contact-field-value text-sm">Сб–Вс: 12:00–22:00</p>
               </div>
               <div>
-                <p className="text-xs tracking-widest text-[#d4af37] uppercase">Телефон</p>
+                <p className="contact-field-label text-xs uppercase">Телефон</p>
                 <a
                   href="tel:+79000894113"
-                  className="mt-1 block text-white/80 transition-colors hover:text-[#d4af37]"
+                  className="contact-field-value mt-1.5 block text-sm transition-colors hover:text-accent"
                 >
                   +7 (900) 089-41-13
                 </a>
               </div>
               <div>
-                <p className="text-xs tracking-widest text-[#d4af37] uppercase">E-mail</p>
+                <p className="contact-field-label text-xs uppercase">E-mail</p>
                 <a
                   href="mailto:info@v-fokuse.ru"
-                  className="mt-1 block text-white/80 transition-colors hover:text-[#d4af37]"
+                  className="contact-field-value mt-1.5 block text-sm transition-colors hover:text-accent"
                 >
                   info@v-fokuse.ru
                 </a>
               </div>
             </div>
           </GlareHover>
-        </AnimatedContent>
 
-        <AnimatedContent distance={30} duration={0.8} delay={0.35} className="mt-10">
-          <div className="flex flex-col items-center gap-5">
+          <div className="mt-10 flex flex-col items-center gap-5">
             <a
               href="tel:+79000894113"
-              className="call-pulse rounded-full bg-[#d4af37] px-10 py-3.5 text-base font-medium tracking-wide text-black transition-transform hover:scale-105"
+              className="call-pulse rounded-full bg-accent px-10 py-3.5 text-base font-medium tracking-wide text-stone-950 transition-transform hover:scale-105"
             >
               Позвонить
             </a>
@@ -592,7 +610,7 @@ function Contact() {
                 href="https://t.me/vfokuse74"
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-white/15 px-7 py-2.5 text-sm text-white/70 transition-colors hover:border-[#d4af37]/40 hover:text-[#d4af37]"
+                className="rounded-full border border-white/15 px-7 py-2.5 text-sm text-white/70 transition-colors hover:border-accent/40 hover:text-accent"
               >
                 Telegram
               </a>
@@ -600,7 +618,7 @@ function Contact() {
                 href="https://vk.com/fokusev"
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-white/15 px-7 py-2.5 text-sm text-white/70 transition-colors hover:border-[#d4af37]/40 hover:text-[#d4af37]"
+                className="rounded-full border border-white/15 px-7 py-2.5 text-sm text-white/70 transition-colors hover:border-accent/40 hover:text-accent"
               >
                 ВКонтакте
               </a>
@@ -624,7 +642,7 @@ function Footer() {
             <span>© {new Date().getFullYear()}</span>
           </div>
 
-          <Link to="/privacy" className="transition-colors hover:text-[#d4af37]">
+          <Link to="/privacy" className="transition-colors hover:text-accent">
             Политика конфиденциальности
           </Link>
 
@@ -644,7 +662,7 @@ export default function App() {
     <>
       <ScrollProgress />
       <Header />
-      <main className="bg-[#0a0a0a]">
+      <main className="bg-canvas">
         <Hero />
         <SectionDivider />
         <Advantages />

@@ -15,16 +15,16 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export default function PrivacyPolicy() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-canvas text-ink">
       <header className="border-b border-white/5 px-6 py-6">
         <div className="mx-auto flex max-w-3xl items-center justify-between">
           <Link
             to="/"
-            className="font-[family-name:var(--font-display)] text-lg tracking-[0.15em] uppercase transition-colors hover:text-[#d4af37]"
+            className="font-[family-name:var(--font-display)] text-lg tracking-[0.15em] uppercase transition-colors hover:text-accent"
           >
             В ФОКУСЕ
           </Link>
-          <Link to="/" className="text-sm text-white/50 transition-colors hover:text-[#d4af37]">
+          <Link to="/" className="text-sm text-white/50 transition-colors hover:text-accent">
             ← На главную
           </Link>
         </div>
@@ -302,7 +302,7 @@ export default function PrivacyPolicy() {
           <p>
             8.3. В случае выявления неточностей в персональных данных Пользователь может
             актуализировать их, направив Оператору уведомление на адрес электронной почты{' '}
-            <a href={`mailto:${OPERATOR_EMAIL}`} className="text-[#d4af37] hover:underline">
+            <a href={`mailto:${OPERATOR_EMAIL}`} className="text-accent hover:underline">
               {OPERATOR_EMAIL}
             </a>{' '}
             с пометкой «Актуализация персональных данных».
@@ -311,7 +311,7 @@ export default function PrivacyPolicy() {
             8.4. Срок обработки персональных данных определяется достижением целей, для
             которых были собраны персональные данные. Пользователь может в любой момент
             отозвать согласие на обработку персональных данных, направив уведомление на{' '}
-            <a href={`mailto:${OPERATOR_EMAIL}`} className="text-[#d4af37] hover:underline">
+            <a href={`mailto:${OPERATOR_EMAIL}`} className="text-accent hover:underline">
               {OPERATOR_EMAIL}
             </a>{' '}
             с пометкой «Отзыв согласия на обработку персональных данных».
@@ -356,11 +356,11 @@ export default function PrivacyPolicy() {
           <p>
             12.1. Пользователь может получить разъяснения по вопросам обработки его персональных
             данных, обратившись к Оператору по электронной почте{' '}
-            <a href={`mailto:${OPERATOR_EMAIL}`} className="text-[#d4af37] hover:underline">
+            <a href={`mailto:${OPERATOR_EMAIL}`} className="text-accent hover:underline">
               {OPERATOR_EMAIL}
             </a>{' '}
             или по телефону{' '}
-            <a href="tel:+79000894113" className="text-[#d4af37] hover:underline">
+            <a href="tel:+79000894113" className="text-accent hover:underline">
               +7 (900) 089-41-13
             </a>
             .
@@ -377,7 +377,7 @@ export default function PrivacyPolicy() {
         </Section>
       </main>
 
-      <footer className="bg-[#0a0a0a]">
+      <footer className="bg-canvas">
         <div className="border-t border-white/5 px-6 py-8 text-center text-sm text-white/35">
           <p>© {new Date().getFullYear()} ИП Искандаров Никита Дмитриевич / ИНН 744845097829</p>
         </div>

@@ -8,6 +8,8 @@ gsap.registerPlugin(ScrollTrigger)
 interface AnimatedContentProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   container?: Element | string | null
+  /** Селектор или элемент-триггер ScrollTrigger (например, `#contact`) */
+  scrollTrigger?: string | Element | null
   distance?: number
   direction?: 'vertical' | 'horizontal'
   reverse?: boolean
@@ -28,6 +30,7 @@ interface AnimatedContentProps extends React.HTMLAttributes<HTMLDivElement> {
 const AnimatedContent: React.FC<AnimatedContentProps> = ({
   children,
   container,
+  scrollTrigger: scrollTriggerTarget,
   distance = 80,
   direction = 'vertical',
   reverse = false,
@@ -62,6 +65,14 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     const axis = direction === 'horizontal' ? 'x' : 'y'
     const offset = reverse ? -distance : distance
     const startPct = (1 - threshold) * 100
+
+    let triggerEl: Element | null = el
+    if (scrollTriggerTarget) {
+      triggerEl =
+        typeof scrollTriggerTarget === 'string'
+          ? document.querySelector(scrollTriggerTarget)
+          : scrollTriggerTarget
+    }
 
     gsap.set(el, {
       [axis]: offset,
@@ -99,7 +110,7 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     })
 
     const st = ScrollTrigger.create({
-      trigger: el,
+      trigger: triggerEl || el,
       scroller: scrollerTarget || window,
       start: `top ${startPct}%`,
       once: true,
@@ -113,6 +124,7 @@ const AnimatedContent: React.FC<AnimatedContentProps> = ({
     }
   }, [
     container,
+    scrollTriggerTarget,
     distance,
     direction,
     reverse,

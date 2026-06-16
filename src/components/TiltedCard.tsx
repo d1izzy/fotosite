@@ -45,7 +45,7 @@ export default function TiltedCard({
   imageFit = 'cover',
   imageBackground = 'transparent',
   glowBorderOnHover = false,
-  glowBorderColor = '#d4af37'
+  glowBorderColor = '#eef2f7'
 }: TiltedCardProps) {
   const ref = useRef<HTMLElement>(null);
   const x = useMotionValue(0);
@@ -146,7 +146,7 @@ export default function TiltedCard({
               className="pointer-events-none absolute inset-0 rounded-[15px]"
               style={{
                 opacity: borderGlow,
-                boxShadow: `inset 0 0 0 2px ${glowBorderColor}, 0 0 28px rgba(212, 175, 55, 0.45)`
+                boxShadow: `inset 0 0 0 2px ${glowBorderColor}, 0 0 28px rgb(var(--color-accent-rgb) / 0.45)`
               }}
             />
           )}

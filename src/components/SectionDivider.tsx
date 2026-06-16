@@ -1,15 +1,15 @@
 import AnimatedContent from './AnimatedContent'
 
-const goldenLineStyle = {
+const accentLineStyle = {
   background:
-    'linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0) 6%, rgba(212, 175, 55, 0.1) 16%, rgba(212, 175, 55, 0.28) 32%, rgba(212, 175, 55, 0.42) 50%, rgba(212, 175, 55, 0.28) 68%, rgba(212, 175, 55, 0.1) 84%, rgba(212, 175, 55, 0) 94%, transparent 100%)',
+    'linear-gradient(90deg, transparent 0%, rgb(var(--color-accent-rgb) / 0) 6%, rgb(var(--color-accent-rgb) / 0.1) 16%, rgb(var(--color-accent-rgb) / 0.28) 32%, rgb(var(--color-accent-rgb) / 0.42) 50%, rgb(var(--color-accent-rgb) / 0.28) 68%, rgb(var(--color-accent-rgb) / 0.1) 84%, rgb(var(--color-accent-rgb) / 0) 94%, transparent 100%)',
 }
 
 export function GoldenLine({ className = '' }: { className?: string }) {
   return (
     <div
       className={`h-px w-full max-w-5xl ${className}`}
-      style={goldenLineStyle}
+      style={accentLineStyle}
     />
   )
 }

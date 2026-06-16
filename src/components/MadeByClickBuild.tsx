@@ -2,7 +2,7 @@ import { assetPath } from '../lib/assetPath'
 
 export default function MadeByClickBuild() {
   return (
-    <div className="border-t border-white/5 bg-black py-3 text-center">
+    <div className="border-t border-white/5 bg-canvas py-3 text-center">
       <a
         href="https://vk.com/clickbuild"
         target="_blank"
