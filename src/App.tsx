@@ -505,19 +505,21 @@ function About() {
 
 function Contact() {
   return (
-    <section id="contact" className="relative px-6 pb-20 pt-10 md:pb-24 md:pt-12">
-      <div className="relative z-10 mx-auto max-w-3xl text-center">
+    <section id="contact" className="relative px-6 pb-16 pt-8 md:pb-20 md:pt-10">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.04)_0%,transparent_70%)]" />
+
+      <div className="relative z-10 mx-auto max-w-4xl">
         <AnimatedContent distance={50} duration={1} className="text-center">
-          <GoldenLine className="mx-auto mb-10 md:mb-12" />
+          <GoldenLine className="mx-auto mb-8" />
           <p className="mb-3 text-xs tracking-[0.3em] text-[#d4af37] uppercase">
             Контакты
           </p>
           <h2 className="font-[family-name:var(--font-display)] text-4xl text-white md:text-5xl">
             Приходите без записи
           </h2>
-          <p className="mx-auto mt-6 max-w-lg text-white/55">
+          <p className="mx-auto mt-6 max-w-2xl text-white/55 leading-relaxed">
             «В ФОКУСЕ» — на 3 этаже ТРЦ «Фокус» в северо-западной части Челябинска.
-            Приходите без записи — фотографируйтесь и забирайте сувениры сразу.
+            Фотографируйтесь и забирайте сувениры сразу — запись не нужна.
           </p>
         </AnimatedContent>
 
@@ -546,9 +548,7 @@ function Contact() {
                 </p>
               </div>
               <div>
-                <p className="text-xs tracking-widest text-[#d4af37] uppercase">
-                  Режим работы
-                </p>
+                <p className="text-xs tracking-widest text-[#d4af37] uppercase">Режим работы</p>
                 <p className="mt-1 text-white/80">Пн–Пт: 14:00–22:00</p>
                 <p className="text-white/80">Сб–Вс: 12:00–22:00</p>
               </div>
@@ -572,24 +572,39 @@ function Contact() {
               </div>
             </div>
           </GlareHover>
+        </AnimatedContent>
 
-          <div className="mt-8 flex justify-center gap-4">
+        <AnimatedContent distance={30} duration={0.8} delay={0.35} className="mt-10">
+          <div className="flex flex-col items-center gap-5">
             <a
-              href="https://t.me/vfokuse74"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/15 px-6 py-2.5 text-sm text-white/70 transition-colors hover:border-[#d4af37]/40 hover:text-[#d4af37]"
+              href="tel:+79000894113"
+              className="call-pulse rounded-full bg-[#d4af37] px-10 py-3.5 text-base font-medium tracking-wide text-black transition-transform hover:scale-105"
             >
-              Telegram
+              Позвонить
             </a>
-            <a
-              href="https://vk.com/fokusev"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/15 px-6 py-2.5 text-sm text-white/70 transition-colors hover:border-[#d4af37]/40 hover:text-[#d4af37]"
-            >
-              ВКонтакте
-            </a>
+
+            <p className="text-xs tracking-[0.25em] text-white/30 uppercase">
+              или напишите нам
+            </p>
+
+            <div className="flex gap-3">
+              <a
+                href="https://t.me/vfokuse74"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-white/15 px-7 py-2.5 text-sm text-white/70 transition-colors hover:border-[#d4af37]/40 hover:text-[#d4af37]"
+              >
+                Telegram
+              </a>
+              <a
+                href="https://vk.com/fokusev"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-white/15 px-7 py-2.5 text-sm text-white/70 transition-colors hover:border-[#d4af37]/40 hover:text-[#d4af37]"
+              >
+                ВКонтакте
+              </a>
+            </div>
           </div>
         </AnimatedContent>
       </div>
